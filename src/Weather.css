@@ -1,0 +1,103 @@
+*{
+    margin:0;
+    padding:0;
+    
+}
+.app {
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    transition: background 0.5s ease-in-out;
+  }
+  
+  .main {
+    max-width: 400px;
+    padding: 20px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    transform: perspective(500px) rotateX(10deg);
+  }
+  
+  /* Search bar styles */
+  .search-box {
+    margin-bottom: 20px;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 15px;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background-color: #f0f0f0;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  .search-bar:focus {
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Location and Date */
+  .location-box {
+    margin: 20px 0;
+  }
+  
+  .location {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .date {
+    font-size: 18px;
+    color: #888;
+  }
+  
+  /* Weather Box */
+  .weather-box {
+    margin-top: 20px;
+  }
+  
+  .temp {
+    font-size: 48px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .weather {
+    font-size: 24px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  /* Background for cold temperature */
+  .cold {
+    background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+    background-size: cover;
+  }
+  
+  /* Background for moderate temperature */
+  .moderate {
+    background: linear-gradient(to top, #3a7bd5, #00d2ff);
+    background-size: cover;
+  }
+  
+  /* Background for hot temperature */
+  .hot {
+    background: linear-gradient(to top, #ff7300, #fef253);
+    background-size: cover;
+  }
+  
+  /* Default background if weather data isn't loaded yet */
+  .default {
+    background: linear-gradient(to top, #87CEEB, #f0f0f0);
+    background-size: cover;
+  }
+  
