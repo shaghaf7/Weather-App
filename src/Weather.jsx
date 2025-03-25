@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './Weather.css';
+import { FaSearch } from 'react-icons/fa';
 
 const api = {
-  key: process.env.REACT_APP_API_KEY, // Use the API key from the .env file
+  key: process.env.REACT_APP_API_KEY,
   base: "https://api.openweathermap.org/data/2.5/"
 };
 
@@ -10,78 +11,61 @@ const Weather = () => {
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
 
-  const search = (evt) => {
-    if (evt.key === "Enter") {
-      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
-        .then(res => res.json())
-        .then(result => {
-          setWeather(result);
-          setQuery('');
-        });
+  const search = async () => {
+    if (query) {
+      try {
+        const response = await fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`);
+        const result = await response.json();
+        setWeather(result);
+        setQuery('');
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+      }
     }
   };
 
   const getBackgroundClass = () => {
-    if (typeof weather.main !== "undefined") {
+    if (weather.main) {
       const temp = weather.main.temp;
-      if (temp < 10) {
-        return 'cold';
-      } else if (temp >= 10 && temp <= 25) {
-        return 'moderate';
-      } else {
-        return 'hot';
-      }
+      return temp < 10 ? 'cold' : temp <= 25 ? 'moderate' : 'hot';
     }
     return 'default';
   };
 
-  const dateBuilder = (d) => {
-    let months = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
-    let days = [
-      "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", 
-      "Friday", "Saturday"
-    ];
-
-    let day = days[d.getDay()];
-    let date = d.getDate();
-    let month = months[d.getMonth()];
-    let year = d.getFullYear();
-
-    return `${day} ${date} ${month} ${year}`;
-  };
-
   return (
     <div className={`app ${getBackgroundClass()}`}>
-      <main>
-        <div className='search-box'>
-          <input 
-            type='text'
-            className='search-bar'
-            placeholder='Search City ...'
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            onKeyPress={search}
-          />
-        </div>
-        {(typeof weather.main !== "undefined") ? (
-          <div>
-            <div className='location-box'>
-              <div className='location'>{weather.name}, {weather.sys.country}</div>
-              <div className='date'>{dateBuilder(new Date())}</div>
-            </div>
-            <div className='weather-box'>
-              <div className='temp'>
-                {Math.round(weather.main.temp)}°C
-              </div>
-              <div className='weather'>
-                {weather.weather[0].main}
-              </div>
-            </div>
+      <header className='app-header'>
+        <h1 className='app-title'>WeatherNest</h1>
+        <p className='app-description'>Stay updated with real-time weather forecasts from around the world. Simply enter your city and get instant weather details.</p>
+      </header>
+      
+      <main className='weather-container'>
+        <div className='content-container'>
+          <div className='search-container'>
+            <input 
+              type='text'
+              className='search-bar'
+              placeholder='Enter city...'
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+            />
+            <button className='search-button wide-button' onClick={search}>
+              <FaSearch />
+            </button>
           </div>
-        ) : ('')}
+
+          {weather.main && (
+            <div className='weather-info'>
+              <h2 className='location'>{weather.name}, {weather.sys?.country}</h2>
+              <div className='weather-details'>
+                <p className='temperature'>{Math.round(weather.main.temp)}°C</p>
+                <p className='weather-condition'>{weather.weather[0].main}</p>
+                <p className='humidity'>Humidity: {weather.main.humidity}%</p>
+                <p className='wind'>Wind: {weather.wind.speed} m/s</p>
+              </div>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );
